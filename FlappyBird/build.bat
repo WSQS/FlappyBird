@@ -1,11 +1,11 @@
 @echo off
 setlocal
 
-set ANDROID_SDK_ROOT=C:\Users\VadimPC\AppData\Local\Android\Sdk
-set ANDROID_NDK_ROOT=C:\Users\VadimPC\AppData\Local\Android\Sdk\ndk\27.1.12297006
+set ANDROID_SDK_ROOT=C:\Users\wsqsy\AppData\Local\Android\Sdk
+set ANDROID_NDK_ROOT=C:\Users\wsqsy\AppData\Local\Android\Sdk\ndk\27.1.12297006
 set PATH=%ANDROID_SDK_ROOT%\tools;%ANDROID_SDK_ROOT%\platform-tools;%PATH%
 
-set ADB=C:\Users\VadimPC\AppData\Local\Android\Sdk\platform-tools\adb.exe
+set ADB=C:\Users\wsqsy\AppData\Local\Android\Sdk\platform-tools\adb.exe
 
 set APKNAME=FlappyBird
 set ANDROIDVERSION=30
@@ -44,7 +44,8 @@ mkdir lib
 xcopy "app\src\main\libs\*" "lib\" /E /I /Y
 
 :: Add the contents of the temporary folder to the archive in the lib folder
-start /min /wait WinRAR A -r app\build\outputs\apk\unaligned.apk "lib\*" "lib\"
+:: TODO: support WinRar and BandZip
+start /min /wait bz a -r app\build\outputs\apk\unaligned.apk ./lib
 
 echo Aligning APK...
 %ANDROID_SDK_ROOT%\build-tools\30.0.3\zipalign -f 4 app\build\outputs\apk\unaligned.apk app\build\outputs\apk\%APKNAME%.apk
@@ -55,7 +56,7 @@ if %errorlevel% neq 0 (
 )
 
 echo Signing APK...
-call %ANDROID_SDK_ROOT%\build-tools\30.0.3\apksigner sign --ks mykeystore.jks --ks-pass pass:%KEYSTORE_PASSWORD% --out app\build\outputs\apk\%APKNAME%-signed.apk app\build\outputs\apk\%APKNAME%.apk
+call %ANDROID_SDK_ROOT%\build-tools\30.0.3\apksigner sign --ks C:\Users\wsqsy\Documents\Cpp\FlappyBird\FlappyBird\sophomorekey.jks --ks-pass pass:%KEYSTORE_PASSWORD% --out app\build\outputs\apk\%APKNAME%-signed.apk app\build\outputs\apk\%APKNAME%.apk
 if %errorlevel% neq 0 (
     echo Error signing APK!
     echo Error code: %errorlevel%
