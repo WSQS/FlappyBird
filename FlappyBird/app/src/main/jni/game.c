@@ -26,17 +26,7 @@ GLuint t_start;
 
 //sprites
 GLuint t[10];
-
-GLuint t_0_small;
-GLuint t_1_small;
-GLuint t_2_small;
-GLuint t_3_small;
-GLuint t_4_small;
-GLuint t_5_small;
-GLuint t_6_small;
-GLuint t_7_small;
-GLuint t_8_small;
-GLuint t_9_small;
+GLuint t_small[10];
 
 GLuint t_background_day;
 GLuint t_base;
@@ -146,18 +136,12 @@ bool InitGame()
         sprintf(path, "sprites/%i.png", i);
         t[i] = LoadTexture(path);
     }
-    
-
-    t_0_small = LoadTexture("sprites/0_small.png");
-    t_1_small = LoadTexture("sprites/1_small.png");
-    t_2_small = LoadTexture("sprites/2_small.png");
-    t_3_small = LoadTexture("sprites/3_small.png");
-    t_4_small = LoadTexture("sprites/4_small.png");
-    t_5_small = LoadTexture("sprites/5_small.png");
-    t_6_small = LoadTexture("sprites/6_small.png");
-    t_7_small = LoadTexture("sprites/7_small.png");
-    t_8_small = LoadTexture("sprites/8_small.png");
-    t_9_small = LoadTexture("sprites/9_small.png");
+    for (int i = 0; i < 10; ++i)
+    {
+        char path[21];
+        sprintf(path, "sprites/%i_small.png", i);
+        t_small[i] = LoadTexture(path);
+    }
 
     t_background_day = LoadTexture("sprites/background-day.png");
     t_base = LoadTexture("sprites/base.png");
@@ -402,21 +386,7 @@ void RenderSmallScoreLeft(int score, float x, float y, float digitWidth, float d
     for (int i = 0; i < len; i++)
     {
         int digit = scoreStr[i] - '0';
-        GLuint texture = 0;
-
-        switch (digit)
-        {
-        case 0: texture = t_0_small; break;
-        case 1: texture = t_1_small; break;
-        case 2: texture = t_2_small; break;
-        case 3: texture = t_3_small; break;
-        case 4: texture = t_4_small; break;
-        case 5: texture = t_5_small; break;
-        case 6: texture = t_6_small; break;
-        case 7: texture = t_7_small; break;
-        case 8: texture = t_8_small; break;
-        case 9: texture = t_9_small; break;
-        }
+        GLuint texture = t_small[digit];
 
         RenderTexture(texture, x + i * digitWidth, y, digitWidth, digitHeight);
     }
@@ -756,19 +726,10 @@ void ShutdownGame()
     glDeleteTextures(1, &t_start);
     glDeleteTextures(1, &t_ok);
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; ++i)
         glDeleteTextures(1, &t[i]);
-
-    glDeleteTextures(1, &t_0_small);
-    glDeleteTextures(1, &t_1_small);
-    glDeleteTextures(1, &t_2_small);
-    glDeleteTextures(1, &t_3_small);
-    glDeleteTextures(1, &t_4_small);
-    glDeleteTextures(1, &t_5_small);
-    glDeleteTextures(1, &t_6_small);
-    glDeleteTextures(1, &t_7_small);
-    glDeleteTextures(1, &t_8_small);
-    glDeleteTextures(1, &t_9_small);
+    for (int i = 0; i < 10; ++i)
+        glDeleteTextures(1, &t_small[i]);
 
     glDeleteTextures(1, &t_background_day);
     glDeleteTextures(1, &t_base);
