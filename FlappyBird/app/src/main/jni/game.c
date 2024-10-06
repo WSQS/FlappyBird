@@ -411,7 +411,7 @@ void RenderScore(int score, float x, float y, float digitWidth, float digitHeigh
     }
 }
 
-void RenderSmallScore(int score, float x, float y, float digitWidth, float digitHeight)
+void RenderSmallScoreLeft(int score, float x, float y, float digitWidth, float digitHeight)
 {
     char scoreStr[10];
     sprintf(scoreStr, "%d", score);
@@ -438,6 +438,14 @@ void RenderSmallScore(int score, float x, float y, float digitWidth, float digit
 
         RenderTexture(texture, x + i * digitWidth, y, digitWidth, digitHeight);
     }
+}
+
+void RenderSmallScoreRight(int score, float x, float y, float digitWidth, float digitHeight)
+{
+    char scoreStr[10];
+    sprintf(scoreStr, "%d", score);
+    int len = strlen(scoreStr);
+    RenderSmallScoreLeft(score, x - len * digitWidth, y, digitWidth, digitHeight);
 }
 
 void Render()
@@ -597,21 +605,21 @@ void Render()
         RenderBird();
 
         panelY = MoveTowards(panelY, ScaleY(30), 20.0f);
-        RenderTexture(t_panel, ScaleX(15), panelY, ScaleX(70), ScaleY(17.5));
+        RenderTexture(t_panel, ScaleX(15), panelY, ScaleX(70), ScaleY(17.5f));
 
         // Render default score
-        RenderSmallScore(score, ScaleX(70), panelY + ScaleY(5), ScaleX(4), ScaleY(3));
+        RenderSmallScoreRight(score, ScaleX(78), panelY + ScaleY(5), ScaleX(4), ScaleY(3));
 
         // Render best score
-        RenderSmallScore(bestScore, ScaleX(70), panelY + ScaleY(11.5), ScaleX(4), ScaleY(3));
+        RenderSmallScoreRight(bestScore, ScaleX(78), panelY + ScaleY(11.5f), ScaleX(4), ScaleY(3));
 
         if (newBestScore)
         {
-            RenderTexture(t_new, ScaleX(56), panelY + ScaleY(9), ScaleX(10), ScaleY(1.8));
+            RenderTexture(t_new, ScaleX(56), panelY + ScaleY(9), ScaleX(10), ScaleY(1.8f));
         }
 
 
-        RenderTexture(t_gameover, ScaleX(17.5), ScaleY(18), ScaleX(65), ScaleY(6));
+        RenderTexture(t_gameover, ScaleX(17.5f), ScaleY(18), ScaleX(65), ScaleY(6));
 
         // Render medal
         if (score >= 40) medalTexture = t_platinum_medal;
