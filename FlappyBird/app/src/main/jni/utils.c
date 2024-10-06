@@ -11,6 +11,16 @@ void Log(const char* fmt, ...)
     va_end(args);
 }
 
+void dealy(float second)
+{
+    struct timespec ts;
+    ts.tv_sec = second;
+    ts.tv_nsec = 0;
+    if (nanosleep(&ts, NULL) == -1) {
+        Log("nanosleep failed");
+    }
+}
+
 uint64_t getTickCount() 
 {
     struct timespec now;

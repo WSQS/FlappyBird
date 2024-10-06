@@ -6,6 +6,8 @@
 
 void Log(const char* fmt, ...);
 
+void dealy(float second);
+
 //#if defined(__aarch64__)
 uint64_t getTickCount();
 //#else

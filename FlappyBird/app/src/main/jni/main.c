@@ -96,7 +96,7 @@ void android_main(struct android_app* state)
 
     MouseInit(&mouse);
 
-    while (1)
+    while (true)
     {
         int ident;
         int events;
@@ -140,5 +140,6 @@ void android_main(struct android_app* state)
             // timeout for thread to fix excessive CPU consumption
             //usleep(1000);
         }
+    dealy(TARGET_FRAME_TIME);
     }
 }
