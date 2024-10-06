@@ -25,16 +25,7 @@ GLuint t_share;
 GLuint t_start;
 
 //sprites
-GLuint t_0;
-GLuint t_1;
-GLuint t_2;
-GLuint t_3;
-GLuint t_4;
-GLuint t_5;
-GLuint t_6;
-GLuint t_7;
-GLuint t_8;
-GLuint t_9;
+GLuint t[10];
 
 GLuint t_0_small;
 GLuint t_1_small;
@@ -149,16 +140,13 @@ bool InitGame()
     t_start = LoadTexture("buttons/start.png");
 
     //sprites
-    t_0 = LoadTexture("sprites/0.png");
-    t_1 = LoadTexture("sprites/1.png");
-    t_2 = LoadTexture("sprites/2.png");
-    t_3 = LoadTexture("sprites/3.png");
-    t_4 = LoadTexture("sprites/4.png");
-    t_5 = LoadTexture("sprites/5.png");
-    t_6 = LoadTexture("sprites/6.png");
-    t_7 = LoadTexture("sprites/7.png");
-    t_8 = LoadTexture("sprites/8.png");
-    t_9 = LoadTexture("sprites/9.png");
+    for (int i = 0; i < 10; ++i)
+    {
+        char path[21];
+        sprintf(path, "sprites/%i.png", i);
+        t[i] = LoadTexture(path);
+    }
+    
 
     t_0_small = LoadTexture("sprites/0_small.png");
     t_1_small = LoadTexture("sprites/1_small.png");
@@ -391,21 +379,7 @@ void RenderScoreLeft(int score, float x, float y, float digitWidth, float digitH
     for (int i = 0; i < len; i++)
     {
         int digit = scoreStr[i] - '0';
-        GLuint texture = 0;
-
-        switch (digit)
-        {
-        case 0: texture = t_0; break;
-        case 1: texture = t_1; break;
-        case 2: texture = t_2; break;
-        case 3: texture = t_3; break;
-        case 4: texture = t_4; break;
-        case 5: texture = t_5; break;
-        case 6: texture = t_6; break;
-        case 7: texture = t_7; break;
-        case 8: texture = t_8; break;
-        case 9: texture = t_9; break;
-        }
+        GLuint texture = t[digit];
 
         RenderTexture(texture, x + i * digitWidth, y, digitWidth, digitHeight);
     }
@@ -782,16 +756,8 @@ void ShutdownGame()
     glDeleteTextures(1, &t_start);
     glDeleteTextures(1, &t_ok);
 
-    glDeleteTextures(1, &t_0);
-    glDeleteTextures(1, &t_1);
-    glDeleteTextures(1, &t_2);
-    glDeleteTextures(1, &t_3);
-    glDeleteTextures(1, &t_4);
-    glDeleteTextures(1, &t_5);
-    glDeleteTextures(1, &t_6);
-    glDeleteTextures(1, &t_7);
-    glDeleteTextures(1, &t_8);
-    glDeleteTextures(1, &t_9);
+    for (int i = 0; i < 10; i++)
+        glDeleteTextures(1, &t[i]);
 
     glDeleteTextures(1, &t_0_small);
     glDeleteTextures(1, &t_1_small);
