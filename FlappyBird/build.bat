@@ -56,7 +56,7 @@ if %errorlevel% neq 0 (
 )
 
 echo Signing APK...
-call %ANDROID_SDK_ROOT%\build-tools\30.0.3\apksigner sign --ks C:\Users\wsqsy\Documents\Cpp\FlappyBird\FlappyBird\sophomorekey.jks --ks-pass pass:%KEYSTORE_PASSWORD% --out app\build\outputs\apk\%APKNAME%-signed.apk app\build\outputs\apk\%APKNAME%.apk
+call %ANDROID_SDK_ROOT%\build-tools\30.0.3\apksigner sign --ks C:\Users\wsqsy\Documents\Cpp\FlappyBird\FlappyBird\mykeystore.jks --ks-pass pass:%KEYSTORE_PASSWORD% --out app\build\outputs\apk\%APKNAME%-signed.apk app\build\outputs\apk\%APKNAME%.apk
 if %errorlevel% neq 0 (
     echo Error signing APK!
     echo Error code: %errorlevel%
