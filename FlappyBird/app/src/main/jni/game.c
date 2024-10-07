@@ -354,7 +354,7 @@ void UpdateBirdTextureForLogo()
     }
 }
 
-void RenderScoreLeft(int score, float x, float y, float digitWidth, float digitHeight)
+void RenderLeft(const GLuint* textures, int score, float x, float y, float digitWidth, float digitHeight)
 {
     char scoreStr[10];
     sprintf(scoreStr, "%d", score);
@@ -363,41 +363,32 @@ void RenderScoreLeft(int score, float x, float y, float digitWidth, float digitH
     for (int i = 0; i < len; i++)
     {
         int digit = scoreStr[i] - '0';
-        GLuint texture = t[digit];
+        GLuint texture = textures[digit];
 
         RenderTexture(texture, x + i * digitWidth, y, digitWidth, digitHeight);
     }
+}
+
+void RenderScoreLeft(int score, float x, float y, float digitWidth, float digitHeight)
+{
+    RenderLeft(t, score, x, y, digitWidth, digitHeight);
 }
 
 void RenderScoreCenter(int score, float x, float y, float digitWidth, float digitHeight)
 {
-    char scoreStr[10];
-    sprintf(scoreStr, "%d", score);
-    int len = strlen(scoreStr);
-    RenderScoreLeft(score, x - (len - 1) / 2.f * digitWidth, y, digitWidth, digitHeight);
+    int len = log10(score) + 1;
+    RenderLeft(t, score, x - (len - 1) / 2.f * digitWidth, y, digitWidth, digitHeight);
 }
 
 void RenderSmallScoreLeft(int score, float x, float y, float digitWidth, float digitHeight)
 {
-    char scoreStr[10];
-    sprintf(scoreStr, "%d", score);
-    int len = strlen(scoreStr);
-
-    for (int i = 0; i < len; i++)
-    {
-        int digit = scoreStr[i] - '0';
-        GLuint texture = t_small[digit];
-
-        RenderTexture(texture, x + i * digitWidth, y, digitWidth, digitHeight);
-    }
+    RenderLeft(t_small, score, x, y, digitWidth, digitHeight);
 }
 
 void RenderSmallScoreRight(int score, float x, float y, float digitWidth, float digitHeight)
 {
-    char scoreStr[10];
-    sprintf(scoreStr, "%d", score);
-    int len = strlen(scoreStr);
-    RenderSmallScoreLeft(score, x - len * digitWidth, y, digitWidth, digitHeight);
+    int len = log10(score) + 1;
+    RenderLeft(t_small, score, x - len * digitWidth, y, digitWidth, digitHeight);
 }
 
 void Render()
