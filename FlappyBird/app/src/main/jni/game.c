@@ -62,9 +62,7 @@ enum GameState {
     FADE_OUT_GAMEOVER,
     FALL_BIRD,
     FADE_IN_PANEL
-};
-
-enum GameState currentState = IDLE;
+} currentState = IDLE;
 
 typedef struct {
     float x, y;
@@ -91,7 +89,6 @@ float birdY;
 float logoVelocity;
 float birdVelocity;
 uint64_t timeAnimBirdForLogo;
-GLuint curTextureAnimBirdForLogo;
 
 GLuint birdTexturesForLogo[3];
 int currentFrameForLogo = 0;
@@ -113,18 +110,23 @@ void bird_init(Bird* input_bird)
     input_bird->lastFrameTime = 0;
 }
 
+void pipe_offset_init(Pipe* input_pipe)
+{
+    input_pipe->offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
+}
+
 void pipe_init(Pipe* input_pipe)
 {
     input_pipe[0].x = ScaleX(100.f);
     input_pipe[0].y = ScaleY(37.5f);
     input_pipe[0].w = ScaleX(15.f);
     input_pipe[0].h = ScaleY(37.5f);
-    input_pipe[0].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
+    pipe_offset_init(&input_pipe[0]);
     input_pipe[1].x = ScaleX(100.f) + ScaleX(60.f);
     input_pipe[1].y = ScaleY(37.5f);
     input_pipe[1].w = ScaleX(15.f);
     input_pipe[1].h = ScaleY(37.5f);
-    input_pipe[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
+    pipe_offset_init(&input_pipe[0]);
 }
 
 bool InitGame()
@@ -447,7 +449,7 @@ void Render()
             if (pipes[i].x < -ScaleX(15.f))
             {
                 pipes[i].x = ScaleX(115.f);
-                pipes[i].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
+                pipe_offset_init(&pipes[i]);
             }
 
             if (bird.x + (bird.width / 2) >= pipes[i].x + pipes[i].w &&
@@ -567,28 +569,9 @@ void Render()
             currentState = IDLE;
             score = 0;
 
-            bird.x = ScaleX(18.52f);
-            bird.y = ScaleY(20.f);
-            bird.velocity = 0.0f;
-            bird.angle = 0.0f;
-            bird.width = ScaleX(11.11f);
-            bird.height = ScaleY(4.17f);
-            bird.currentTexture = birdTexturesForLogo[1];
-            bird.frame = 0;
-            bird.lastFrameTime = 0;
+            bird_init(&bird);
+            pipe_init(pipes);
 
-
-            pipes[0].x = ScaleX(100.f);
-            pipes[0].y = ScaleY(37.5f);
-            pipes[0].w = ScaleX(15.f);
-            pipes[0].h = ScaleY(37.5f);
-            pipes[0].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
-
-            pipes[1].x = ScaleX(100.f) + ScaleX(60.f);
-            pipes[1].y = ScaleY(37.5f);
-            pipes[1].w = ScaleX(15.f);
-            pipes[1].h = ScaleY(37.5f);
-            pipes[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 
             panelY = ScaleY(100);
 
