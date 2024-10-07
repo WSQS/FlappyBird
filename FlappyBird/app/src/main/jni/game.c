@@ -104,11 +104,16 @@ void bird_init(Bird* input_bird)
 
 void pipe_init(Pipe* input_pipe)
 {
-    input_pipe->x = ScaleX(100.f);
-    input_pipe->y = ScaleY(37.5f);
-    input_pipe->w = ScaleX(15.f);
-    input_pipe->h = ScaleY(37.5f);
-    input_pipe->offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
+    input_pipe[0].x = ScaleX(100.f);
+    input_pipe[0].y = ScaleY(37.5f);
+    input_pipe[0].w = ScaleX(15.f);
+    input_pipe[0].h = ScaleY(37.5f);
+    input_pipe[0].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
+    input_pipe[1].x = ScaleX(100.f) + ScaleX(60.f);
+    input_pipe[1].y = ScaleY(37.5f);
+    input_pipe[1].w = ScaleX(15.f);
+    input_pipe[1].h = ScaleY(37.5f);
+    input_pipe[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 }
 
 float logoY;
@@ -169,7 +174,6 @@ bool InitGame()
 
     bird_init(&bird);
     pipe_init(&pipes[0]);
-    pipe_init(&pipes[1]);
 
     logoY = ScaleY(20.83f);
     birdY = ScaleY(20.83f);
