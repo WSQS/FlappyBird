@@ -41,9 +41,6 @@ GLuint t_pipe_green;
 GLuint t_platinum_medal;
 GLuint t_silver_medal;
 GLuint t_sparkle_sheet;
-GLuint t_yellowbird_downflap;
-GLuint t_yellowbird_midflap;
-GLuint t_yellowbird_upflap;
 
 // data
 int offsetBase = 0;
@@ -89,6 +86,20 @@ typedef struct {
 Bird bird;
 Pipe pipes[2];
 
+float logoY;
+float birdY;
+float logoVelocity;
+float birdVelocity;
+uint64_t timeAnimBirdForLogo;
+GLuint curTextureAnimBirdForLogo;
+
+GLuint birdTexturesForLogo[3];
+int currentFrameForLogo = 0;
+
+int fadeOutAlpha = 255;
+float panelY = 0;
+GLuint medalTexture = 0;
+
 void bird_init(Bird* input_bird)
 {
     input_bird->x = ScaleX(18.52f);
@@ -97,7 +108,7 @@ void bird_init(Bird* input_bird)
     input_bird->angle = 0.0f;
     input_bird->width = ScaleX(11.11f);
     input_bird->height = ScaleY(4.17f);
-    input_bird->currentTexture = t_yellowbird_midflap;
+    input_bird->currentTexture = birdTexturesForLogo[1];
     input_bird->frame = 0;
     input_bird->lastFrameTime = 0;
 }
@@ -115,20 +126,6 @@ void pipe_init(Pipe* input_pipe)
     input_pipe[1].h = ScaleY(37.5f);
     input_pipe[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 }
-
-float logoY;
-float birdY;
-float logoVelocity;
-float birdVelocity;
-uint64_t timeAnimBirdForLogo;
-GLuint curTextureAnimBirdForLogo;
-
-GLuint birdTexturesForLogo[3];
-int currentFrameForLogo = 0;
-
-int fadeOutAlpha = 255;
-float panelY = 0;
-GLuint medalTexture = 0;
 
 bool InitGame()
 {
@@ -168,12 +165,11 @@ bool InitGame()
     t_platinum_medal = LoadTexture("sprites/platinum-medal.png");
     t_silver_medal = LoadTexture("sprites/silver-medal.png");
     t_sparkle_sheet = LoadTexture("sprites/sparkle-sheet.png");
-    t_yellowbird_downflap = LoadTexture("sprites/yellowbird-downflap.png");
-    t_yellowbird_midflap = LoadTexture("sprites/yellowbird-midflap.png");
-    t_yellowbird_upflap = LoadTexture("sprites/yellowbird-upflap.png");
-
+    birdTexturesForLogo[0] = LoadTexture("sprites/yellowbird-downflap.png");
+    birdTexturesForLogo[1] = LoadTexture("sprites/yellowbird-midflap.png");
+    birdTexturesForLogo[2] = LoadTexture("sprites/yellowbird-upflap.png");
     bird_init(&bird);
-    pipe_init(&pipes[0]);
+    pipe_init(pipes);
 
     logoY = ScaleY(20.83f);
     birdY = ScaleY(20.83f);
@@ -181,11 +177,9 @@ bool InitGame()
     birdVelocity = 1.1f;
 
     timeAnimBirdForLogo = getTickCount();
-    curTextureAnimBirdForLogo = t_yellowbird_midflap;
+    curTextureAnimBirdForLogo = birdTexturesForLogo[1];
 
-    birdTexturesForLogo[0] = t_yellowbird_downflap;
-    birdTexturesForLogo[1] = t_yellowbird_midflap;
-    birdTexturesForLogo[2] = t_yellowbird_upflap;
+
 
     panelY = ScaleY(100.f);
 
@@ -227,12 +221,7 @@ void AnimateBird()
     {
         bird.lastFrameTime = currentTime;
         bird.frame = (bird.frame + 1) % 3;
-        switch (bird.frame)
-        {
-        case 0: bird.currentTexture = t_yellowbird_downflap; break;
-        case 1: bird.currentTexture = t_yellowbird_midflap; break;
-        case 2: bird.currentTexture = t_yellowbird_upflap; break;
-        }
+        bird.currentTexture = birdTexturesForLogo[bird.frame];
     }
 }
 
@@ -588,7 +577,7 @@ void Render()
             bird.angle = 0.0f;
             bird.width = ScaleX(11.11f);
             bird.height = ScaleY(4.17f);
-            bird.currentTexture = t_yellowbird_midflap;
+            bird.currentTexture = birdTexturesForLogo[1];
             bird.frame = 0;
             bird.lastFrameTime = 0;
 
@@ -710,11 +699,8 @@ void ShutdownGame()
     glDeleteTextures(1, &t_share);
     glDeleteTextures(1, &t_start);
     glDeleteTextures(1, &t_ok);
-
-    for (int i = 0; i < 10; ++i)
-        glDeleteTextures(1, &t[i]);
-    for (int i = 0; i < 10; ++i)
-        glDeleteTextures(1, &t_small[i]);
+    glDeleteTextures(10, t);
+    glDeleteTextures(10, t_small);
 
     glDeleteTextures(1, &t_background_day);
     glDeleteTextures(1, &t_base);
@@ -729,7 +715,5 @@ void ShutdownGame()
     glDeleteTextures(1, &t_platinum_medal);
     glDeleteTextures(1, &t_silver_medal);
     glDeleteTextures(1, &t_sparkle_sheet);
-    glDeleteTextures(1, &t_yellowbird_downflap);
-    glDeleteTextures(1, &t_yellowbird_midflap);
-    glDeleteTextures(1, &t_yellowbird_upflap);
+    glDeleteTextures(3, birdTexturesForLogo);
 }
