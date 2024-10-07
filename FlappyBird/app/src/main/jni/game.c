@@ -161,7 +161,7 @@ bool InitGame()
     t_yellowbird_upflap = LoadTexture("sprites/yellowbird-upflap.png");
 
     bird.x = ScaleX(18.52f);
-    bird.y = ScaleY(20);
+    bird.y = ScaleY(20.f);
     bird.velocity = 0.0f;
     bird.angle = 0.0f;
     bird.width = ScaleX(11.11f);
@@ -171,15 +171,15 @@ bool InitGame()
     bird.lastFrameTime = 0;
 
 
-    pipes[0].x = ScaleX(100);
+    pipes[0].x = ScaleX(100.f);
     pipes[0].y = ScaleY(37.5f);
-    pipes[0].w = ScaleX(15);
+    pipes[0].w = ScaleX(15.f);
     pipes[0].h = ScaleY(37.5f);
     pipes[0].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 
-    pipes[1].x = ScaleX(100) + ScaleX(60);
+    pipes[1].x = ScaleX(100.f) + ScaleX(60.f);
     pipes[1].y = ScaleY(37.5f);
-    pipes[1].w = ScaleX(15);
+    pipes[1].w = ScaleX(15.f);
     pipes[1].h = ScaleY(37.5f);
     pipes[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 
@@ -196,7 +196,7 @@ bool InitGame()
     birdTexturesForLogo[1] = t_yellowbird_midflap;
     birdTexturesForLogo[2] = t_yellowbird_upflap;
 
-    panelY = ScaleY(100);
+    panelY = ScaleY(100.f);
 
     newBestScore = false;
 
@@ -312,7 +312,7 @@ bool CheckCollision()
     }
 
     // ground collision
-    float baseHeight = ScaleY(75);
+    float baseHeight = ScaleY(75.f);
     if (bird.y + bird.width > baseHeight)
     {
         return true;
@@ -403,7 +403,7 @@ void RenderSmallScoreRight(int score, float x, float y, float digitWidth, float 
 void Render()
 {
     //background
-    RenderTexture(t_background_day, 0, 0, ScaleX(100), ScaleY(95.83));
+    RenderTexture(t_background_day, 0, 0, ScaleX(100.f), ScaleY(95.83f));
 
     //cycle base texture
     if (currentState != STOP_GAME && currentState != FADE_OUT_GAMEOVER && currentState != FALL_BIRD && currentState != FADE_IN_PANEL)
@@ -411,14 +411,14 @@ void Render()
         offsetBase -= gameSpeed;
     }
 
-    RenderTexture(t_base, offsetBase, ScaleY(75), ScaleX(100), ScaleY(25));
+    RenderTexture(t_base, offsetBase, ScaleY(75.f), ScaleX(100.f), ScaleY(25.f));
 
     if (offsetBase < 0)
     {
-        RenderTexture(t_base, ScaleX(100) + offsetBase, ScaleY(75), ScaleX(100), ScaleY(25));
+        RenderTexture(t_base, ScaleX(100.f) + offsetBase, ScaleY(75.f), ScaleX(100.f), ScaleY(25.f));
     }
 
-    if (offsetBase <= -ScaleX(100))
+    if (offsetBase <= -ScaleX(100.f))
     {
         offsetBase = 0;
     }
@@ -436,30 +436,32 @@ void Render()
 
     if (currentState == IDLE || currentState == FADE_IN)
     {
-        RenderTexture(t_logo, ScaleX(15), logoY, ScaleX(55.56), ScaleY(5.21));
+        RenderTexture(t_logo, ScaleX(15.f), logoY, ScaleX(55.56f), ScaleY(5.21f));
 
         UpdateBirdTextureForLogo();
 
         RenderTexture(curTextureAnimBirdForLogo, ScaleX(75), birdY, bird.width, bird.height);
 
-        if (ButtonBump(t_start, ScaleX(10), ScaleY(65), ScaleX(35), ScaleY(6)))
+        if (ButtonBump(t_start, ScaleX(10.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
-            PlayAudio("audio/click_sound.ogg");
+            //later
+            //PlayAudio("audio/click_sound.ogg");
             currentState = FADE_IN;
         }
         
         // button SCORE
-        if (ButtonBump(t_score, ScaleX(55), ScaleY(65), ScaleX(35), ScaleY(6)))
+        if (ButtonBump(t_score, ScaleX(55.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
-            PlayAudio("audio/click_sound.ogg");
+            //later
+            //PlayAudio("audio/click_sound.ogg");
         }
     }
     else if (currentState == FADE_OUT || currentState == READY_GAME) //Ready?
     {
         RenderBird();
 
-        RenderTexture(t_message, ScaleX(10), ScaleY(9), ScaleX(80), ScaleY(50));
-        if (Button(0, 0, ScaleX(100), ScaleY(100)))
+        RenderTexture(t_message, ScaleX(10.f), ScaleY(9.f), ScaleX(80.f), ScaleY(50.f));
+        if (Button(0, 0, ScaleX(100.f), ScaleY(100.f)))
         {
             currentState = GO_GAME;
         }
@@ -472,9 +474,9 @@ void Render()
         for (int i = 0; i < 2; i++)
         {
             pipes[i].x -= gameSpeed;
-            if (pipes[i].x < -ScaleX(15))
+            if (pipes[i].x < -ScaleX(15.f))
             {
-                pipes[i].x = ScaleX(115);
+                pipes[i].x = ScaleX(115.f);
                 pipes[i].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
             }
 
@@ -492,7 +494,7 @@ void Render()
             PlayAudio("audio/hit.mp3");
         }
 
-        if (IsClick(0, 0, ScaleX(100), ScaleY(100)))
+        if (IsClick(0, 0, ScaleX(100.f), ScaleY(100.f)))
         {
             Jump();
             PlayAudio("audio/wing.mp3");
@@ -502,7 +504,7 @@ void Render()
         RenderBird();
 
         if (score > 0)
-            RenderScoreCenter(score, ScaleX(45), ScaleY(7), ScaleX(8), ScaleY(5));
+            RenderScore(score, ScaleX(45.f), ScaleY(7.f), ScaleX(8.f), ScaleY(5.f));
     }
     else if (currentState == STOP_GAME)
     {
@@ -537,7 +539,7 @@ void Render()
         RenderBird();
 
         uint32_t color = 0x00FFFFFF | (fadeOutAlpha << 24);
-        CreateBox(color, 0, 0, ScaleX(100), ScaleY(100));
+        CreateBox(color, 0, 0, ScaleX(100.f), ScaleY(100.f));
     }
     else if (currentState == FALL_BIRD)
     {
@@ -545,9 +547,9 @@ void Render()
         RenderPipes();
         RenderBird();
 
-        if (bird.y + bird.height >= ScaleY(75) - bird.height)
+        if (bird.y + bird.height >= ScaleY(75.f) - bird.height)
         {
-            bird.y = ScaleY(75) - bird.height;
+            bird.y = ScaleY(75.f) - bird.height;
             currentState = FADE_IN_PANEL;
         }
     }
@@ -557,7 +559,7 @@ void Render()
         RenderBird();
 
         panelY = MoveTowards(panelY, ScaleY(30), 20.0f);
-        RenderTexture(t_panel, ScaleX(15), panelY, ScaleX(70), ScaleY(17.5f));
+        RenderTexture(t_panel, ScaleX(15.f), panelY, ScaleX(70.f), ScaleY(17.5f));
 
         // Render default score
         RenderSmallScoreRight(score, ScaleX(78), panelY + ScaleY(5), ScaleX(4), ScaleY(3));
@@ -567,11 +569,11 @@ void Render()
 
         if (newBestScore)
         {
-            RenderTexture(t_new, ScaleX(56), panelY + ScaleY(9), ScaleX(10), ScaleY(1.8f));
+            RenderTexture(t_new, ScaleX(56.f), panelY + ScaleY(9.f), ScaleX(10.f), ScaleY(1.8f));
         }
 
 
-        RenderTexture(t_gameover, ScaleX(17.5f), ScaleY(18), ScaleX(65), ScaleY(6));
+        RenderTexture(t_gameover, ScaleX(17.5f), ScaleY(18.f), ScaleX(65.f), ScaleY(6.f));
 
         // Render medal
         if (score >= 40) medalTexture = t_platinum_medal;
@@ -582,38 +584,40 @@ void Render()
 
         if (medalTexture)
         {
-            RenderTexture(medalTexture, ScaleX(22), panelY + ScaleY(6), ScaleX(15), ScaleY(7));
+            RenderTexture(medalTexture, ScaleX(22.f), panelY + ScaleY(6.f), ScaleX(15.f), ScaleY(7.f));
         }
 
         // button OK
-        if (ButtonBump(t_ok, ScaleX(10), ScaleY(65), ScaleX(35), ScaleY(6)))
+        if (ButtonBump(t_ok, ScaleX(10.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
-            PlayAudio("audio/click_sound.ogg");
+            //later
+            //PlayAudio("audio/click_sound.ogg");
+
             //Reset
             currentState = IDLE;
             score = 0;
 
-            bird.x = ScaleX(18.52);
-            bird.y = ScaleY(20);
+            bird.x = ScaleX(18.52f);
+            bird.y = ScaleY(20.f);
             bird.velocity = 0.0f;
             bird.angle = 0.0f;
-            bird.width = ScaleX(11.11);
-            bird.height = ScaleY(4.17);
+            bird.width = ScaleX(11.11f);
+            bird.height = ScaleY(4.17f);
             bird.currentTexture = t_yellowbird_midflap;
             bird.frame = 0;
             bird.lastFrameTime = 0;
 
 
-            pipes[0].x = ScaleX(100);
-            pipes[0].y = ScaleY(37.5);
-            pipes[0].w = ScaleX(15);
-            pipes[0].h = ScaleY(37.5);
+            pipes[0].x = ScaleX(100.f);
+            pipes[0].y = ScaleY(37.5f);
+            pipes[0].w = ScaleX(15.f);
+            pipes[0].h = ScaleY(37.5f);
             pipes[0].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 
-            pipes[1].x = ScaleX(100) + ScaleX(60);
-            pipes[1].y = ScaleY(37.5);
-            pipes[1].w = ScaleX(15);
-            pipes[1].h = ScaleY(37.5);
+            pipes[1].x = ScaleX(100.f) + ScaleX(60.f);
+            pipes[1].y = ScaleY(37.5f);
+            pipes[1].w = ScaleX(15.f);
+            pipes[1].h = ScaleY(37.5f);
             pipes[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 
             panelY = ScaleY(100);
@@ -626,7 +630,8 @@ void Render()
         // button SHARE
         if (ButtonBump(t_share, ScaleX(55), ScaleY(65), ScaleX(35), ScaleY(6)))
         {
-            PlayAudio("audio/click_sound.ogg");
+            //later
+            //PlayAudio("audio/click_sound.ogg");
         }
     }
 
