@@ -177,9 +177,6 @@ bool InitGame()
     birdVelocity = 1.1f;
 
     timeAnimBirdForLogo = getTickCount();
-    curTextureAnimBirdForLogo = birdTexturesForLogo[1];
-
-
 
     panelY = ScaleY(100.f);
 
@@ -323,15 +320,15 @@ void RenderPipes()
     }
 }
 
-void UpdateBirdTextureForLogo()
+void RenderBirdTextureForLogo()
 {
     uint64_t currentTime = getTickCount();
     if (currentTime - timeAnimBirdForLogo > 100)
     {
         timeAnimBirdForLogo = currentTime;
         currentFrameForLogo = (currentFrameForLogo + 1) % 3;
-        curTextureAnimBirdForLogo = birdTexturesForLogo[currentFrameForLogo];
     }
+    RenderTexture(birdTexturesForLogo[currentFrameForLogo], ScaleX(75), birdY, bird.width, bird.height);
 }
 
 void RenderLeft(const GLuint* textures, int score, float x, float y, float digitWidth, float digitHeight)
@@ -412,9 +409,8 @@ void Render()
     {
         RenderTexture(t_logo, ScaleX(15.f), logoY, ScaleX(55.56f), ScaleY(5.21f));
 
-        UpdateBirdTextureForLogo();
+        RenderBirdTextureForLogo();
 
-        RenderTexture(curTextureAnimBirdForLogo, ScaleX(75), birdY, bird.width, bird.height);
 
         if (ButtonBump(t_start, ScaleX(10.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
