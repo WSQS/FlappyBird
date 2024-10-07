@@ -8,6 +8,8 @@ void Log(const char* fmt, ...);
 
 void dealy(float second);
 
+int Random(int min, int max);
+
 //#if defined(__aarch64__)
 uint64_t getTickCount();
 //#else

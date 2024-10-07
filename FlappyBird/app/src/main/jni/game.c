@@ -89,14 +89,26 @@ typedef struct {
 Bird bird;
 Pipe pipes[2];
 
-float ScaleX(float percent)
+void bird_init(Bird* input_bird)
 {
-    return (percent / 100.0f) * WindowSizeX;
+    input_bird->x = ScaleX(18.52f);
+    input_bird->y = ScaleY(20.f);
+    input_bird->velocity = 0.0f;
+    input_bird->angle = 0.0f;
+    input_bird->width = ScaleX(11.11f);
+    input_bird->height = ScaleY(4.17f);
+    input_bird->currentTexture = t_yellowbird_midflap;
+    input_bird->frame = 0;
+    input_bird->lastFrameTime = 0;
 }
 
-float ScaleY(float percent)
+void pipe_init(Pipe* input_pipe)
 {
-    return (percent / 100.0f) * WindowSizeY;
+    input_pipe->x = ScaleX(100.f);
+    input_pipe->y = ScaleY(37.5f);
+    input_pipe->w = ScaleX(15.f);
+    input_pipe->h = ScaleY(37.5f);
+    input_pipe->offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
 }
 
 float logoY;
@@ -112,11 +124,6 @@ int currentFrameForLogo = 0;
 int fadeOutAlpha = 255;
 float panelY = 0;
 GLuint medalTexture = 0;
-
-int Random(int min, int max)
-{
-    return min + rand() / (RAND_MAX / (max - min + 1) + 1);
-}
 
 bool InitGame()
 {
@@ -160,29 +167,9 @@ bool InitGame()
     t_yellowbird_midflap = LoadTexture("sprites/yellowbird-midflap.png");
     t_yellowbird_upflap = LoadTexture("sprites/yellowbird-upflap.png");
 
-    bird.x = ScaleX(18.52f);
-    bird.y = ScaleY(20.f);
-    bird.velocity = 0.0f;
-    bird.angle = 0.0f;
-    bird.width = ScaleX(11.11f);
-    bird.height = ScaleY(4.17f);
-    bird.currentTexture = t_yellowbird_midflap;
-    bird.frame = 0;
-    bird.lastFrameTime = 0;
-
-
-    pipes[0].x = ScaleX(100.f);
-    pipes[0].y = ScaleY(37.5f);
-    pipes[0].w = ScaleX(15.f);
-    pipes[0].h = ScaleY(37.5f);
-    pipes[0].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
-
-    pipes[1].x = ScaleX(100.f) + ScaleX(60.f);
-    pipes[1].y = ScaleY(37.5f);
-    pipes[1].w = ScaleX(15.f);
-    pipes[1].h = ScaleY(37.5f);
-    pipes[1].offset = Random(ScaleY(-SPACE_BETWEEN_PIPES), ScaleY(SPACE_BETWEEN_PIPES));
-
+    bird_init(&bird);
+    pipe_init(&pipes[0]);
+    pipe_init(&pipes[1]);
 
     logoY = ScaleY(20.83f);
     birdY = ScaleY(20.83f);

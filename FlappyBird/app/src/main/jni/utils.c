@@ -2,6 +2,7 @@
 #include <android/log.h>
 #include <sys/time.h>
 #include <time.h>
+#include <stdlib.h>
 
 void Log(const char* fmt, ...)
 {
@@ -19,6 +20,11 @@ void dealy(float second)
     if (nanosleep(&ts, NULL) == -1) {
         Log("nanosleep failed");
     }
+}
+
+int Random(int min, int max)
+{
+    return min + rand() / (RAND_MAX / (max - min + 1) + 1);
 }
 
 uint64_t getTickCount() 

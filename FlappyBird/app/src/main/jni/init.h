@@ -21,4 +21,13 @@ void Init(struct android_app* app);
 void MainLoopStep();
 void Shutdown();
 
+inline float ScaleX(float percent)
+{
+    return (percent / 100.0f) * WindowSizeX;
+}
+
+inline float ScaleY(float percent)
+{
+    return (percent / 100.0f) * WindowSizeY;
+}
 #endif // INIT_H
