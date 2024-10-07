@@ -144,14 +144,18 @@ bool InitGame()
     for (int i = 0; i < 10; ++i)
     {
         char path[21];
-        sprintf(path, "sprites/%i.png", i);
-        t[i] = LoadTexture(path);
+        if (sprintf(path, "sprites/%d.png", i) > 0)
+            t[i] = LoadTexture(path);
+        else
+            Log("%s:%s:sprintf filed,i:%d",__FILE__,__LINE__, i);
     }
     for (int i = 0; i < 10; ++i)
     {
         char path[21];
-        sprintf(path, "sprites/%i_small.png", i);
-        t_small[i] = LoadTexture(path);
+        if (sprintf(path, "sprites/%d_small.png", i) > 0)
+            t[i] = LoadTexture(path);
+        else
+            Log("%s:%s:sprintf filed,i:%d",__FILE__,__LINE__, i);
     }
 
     t_background_day = LoadTexture("sprites/background-day.png");
@@ -206,7 +210,7 @@ bool InitGame()
 
 float MoveTowards(float current, float target, float maxDelta)
 {
-    if (fabs(target - current) <= maxDelta)
+    if (fabsf(target - current) <= maxDelta)
     {
         return target;
     }
