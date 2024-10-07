@@ -369,6 +369,11 @@ void RenderLeft(const GLuint* textures, int score, float x, float y, float digit
     }
 }
 
+int len(int score)
+{
+    if (score == 0)return 1;
+    return log10(score) + 1;
+}
 void RenderScoreLeft(int score, float x, float y, float digitWidth, float digitHeight)
 {
     RenderLeft(t, score, x, y, digitWidth, digitHeight);
@@ -376,8 +381,7 @@ void RenderScoreLeft(int score, float x, float y, float digitWidth, float digitH
 
 void RenderScoreCenter(int score, float x, float y, float digitWidth, float digitHeight)
 {
-    int len = log10(score) + 1;
-    RenderLeft(t, score, x - (len - 1) / 2.f * digitWidth, y, digitWidth, digitHeight);
+    RenderLeft(t, score, x - (len(score) - 1) / 2.f * digitWidth, y, digitWidth, digitHeight);
 }
 
 void RenderSmallScoreLeft(int score, float x, float y, float digitWidth, float digitHeight)
@@ -387,8 +391,7 @@ void RenderSmallScoreLeft(int score, float x, float y, float digitWidth, float d
 
 void RenderSmallScoreRight(int score, float x, float y, float digitWidth, float digitHeight)
 {
-    int len = log10(score) + 1;
-    RenderLeft(t_small, score, x - len * digitWidth, y, digitWidth, digitHeight);
+    RenderLeft(t_small, score, x - len(score) * digitWidth, y, digitWidth, digitHeight);
 }
 
 void Render()
