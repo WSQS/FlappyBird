@@ -420,16 +420,14 @@ void Render()
 
         if (ButtonBump(t_start, ScaleX(10.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
-            //later
-            //PlayAudio("audio/click_sound.ogg");
+            PlayAudio("audio/click_sound.ogg");
             currentState = FADE_IN;
         }
         
         // button SCORE
         if (ButtonBump(t_score, ScaleX(55.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
-            //later
-            //PlayAudio("audio/click_sound.ogg");
+            PlayAudio("audio/click_sound.ogg");
         }
     }
     else if (currentState == FADE_OUT || currentState == READY_GAME) //Ready?
@@ -566,8 +564,7 @@ void Render()
         // button OK
         if (ButtonBump(t_ok, ScaleX(10.f), ScaleY(65.f), ScaleX(35.f), ScaleY(6.f)))
         {
-            //later
-            //PlayAudio("audio/click_sound.ogg");
+            PlayAudio("audio/click_sound.ogg");
 
             //Reset
             currentState = IDLE;
@@ -587,8 +584,7 @@ void Render()
         // button SHARE
         if (ButtonBump(t_share, ScaleX(55), ScaleY(65), ScaleX(35), ScaleY(6)))
         {
-            //later
-            //PlayAudio("audio/click_sound.ogg");
+            PlayAudio("audio/click_sound.ogg");
         }
     }
 
